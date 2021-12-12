@@ -40,7 +40,12 @@ public class MovieServiceImplementation implements MovieService{
 
     @Override
     public void delete(long id) {
-        movieRepository.deleteById(id);
+        try{
+            movieRepository.deleteById(id);}
+        catch(Exception e){
+            System.out.println("Error in deletingById");
+            e.printStackTrace();
+        }
     }
 
 }

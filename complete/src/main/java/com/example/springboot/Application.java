@@ -17,6 +17,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 @SpringBootApplication
 public class Application implements CommandLineRunner {
@@ -41,13 +42,17 @@ public class Application implements CommandLineRunner {
         };
     }*/
     private void demo2(){
-        movieService.save(new Movie("Taxi Driver", 9.0));
-        movieService.save(new Movie("Batman", 2.5));
+     /*   movieService.save(new Movie("Taxi Driver", 9.0));
+        movieService.save(new Movie("Batman", 2.5));*/
         System.out.println("----findAll");
         for (Movie mov:movieService.findAll() ){
             System.out.println(mov.toString());
         }
-        movieService.delete(1L);
+      /*  try{
+        movieService.delete(1L);}
+        catch(EmptyResultDataAccessException e){
+            e.printStackTrace();
+        }*/
         System.out.println("----findAll AFTER deletion");
         for (Movie mov:movieService.findAll() ){
             System.out.println(mov.toString());
