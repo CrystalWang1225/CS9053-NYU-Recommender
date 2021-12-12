@@ -33,4 +33,14 @@ public class MovieServiceImplementation implements MovieService{
         return movieRepository.findById(id);
     }
 
+    @Override
+    public Movie save(Movie movie) {
+        return movieRepository.save(movie);
+    }
+
+    @Override
+    public void delete(long id) {
+        movieRepository.deleteById(id);
+    }
+
 }

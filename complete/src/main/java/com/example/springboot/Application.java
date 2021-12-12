@@ -31,8 +31,8 @@ public class Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        demo1();
-
+      //  demo1();
+        demo2();
     }
     /*@Bean
    public CommandLineRunner demo(MovieRepository repository) {
@@ -40,7 +40,19 @@ public class Application implements CommandLineRunner {
             demo1();
         };
     }*/
-
+    private void demo2(){
+        movieService.save(new Movie("Taxi Driver", 9.0));
+        movieService.save(new Movie("Batman", 2.5));
+        System.out.println("----findAll");
+        for (Movie mov:movieService.findAll() ){
+            System.out.println(mov.toString());
+        }
+        movieService.delete(1L);
+        System.out.println("----findAll AFTER deletion");
+        for (Movie mov:movieService.findAll() ){
+            System.out.println(mov.toString());
+        }
+    }
     private void demo1(){
         System.out.println("----findAll");
         for (Movie mov:movieService.findAll() ){

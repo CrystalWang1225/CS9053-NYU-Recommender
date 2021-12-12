@@ -10,9 +10,12 @@ public interface MovieService {
     public Iterable<Movie> findAll();
     public List<Movie> searchByRating( double min,  double max);
 
-    List<Movie> findByName(String name);
+    public List<Movie> findByName(String name);
 
-    Movie findById(long id);
+    public Movie findById(long id);
+
+    public Movie save(Movie movie);
+    public void delete(long id);
 }
 
 
