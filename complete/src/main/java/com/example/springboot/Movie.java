@@ -10,22 +10,29 @@ public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private long id;
     private String name;
-    private String genre;
+  //  private String genre;
     private Double rating;
+
+    protected Movie() {}
+
+    public Movie(String name, Double rating) {
+        this.name   = name;
+        this.rating = rating;
+    }
 
     /**
      * @return the id
      */
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
     /**
      * @param id the id to set
      */
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -42,19 +49,7 @@ public class Movie {
     public void setName(String name) {
         this.name = name;
     }
-    /**
-     * @return the genre
-     */
-    public String getGenre() {
-        return genre;
-    }
 
-    /**
-     * @param genre the genre to set
-     */
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
 
     /**
      * @return the message
@@ -70,4 +65,7 @@ public class Movie {
         this.rating = rating;
     }
 
+    public String toString(){
+        return "Name: "+ this.getName() + " Rating: "+ this.getRating();
+    }
 }
