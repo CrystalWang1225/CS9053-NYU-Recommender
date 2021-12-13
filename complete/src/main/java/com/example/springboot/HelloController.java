@@ -1,7 +1,5 @@
 package com.example.springboot;
 
-import org.json.JSONObject;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 //jsoup
@@ -29,8 +27,7 @@ public class HelloController {
 	}
 
 	@GetMapping("/scrape")
-	@CrossOrigin(origins = "http://localhost:3000")
-	public JSONObject scrape() throws  Exception{
+	public String scrape() throws  Exception{
 		//scraping each genre seperately and printing the results  out
 		System.out.println("starting romance movies");
 		scrape_url(imdb_comedy_link);
@@ -45,12 +42,7 @@ public class HelloController {
 		System.out.println("-----------------------------------------------------------------------");
 
 		//return string
-		//return "finished scraping";
-		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("id", 0);
-		jsonObj.put("name", "testName");
-		System.out.println(jsonObj);
-		return jsonObj;
+		return "finished scraping";
 	}
 	public void scrape_url(String url_link)throws  Exception{
 		// given a imdb URL address that contains movies for specific genre,
