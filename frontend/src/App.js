@@ -1,7 +1,6 @@
 import React,{Component} from 'react';
 import './App.css';
 import List from './components/List';
-import Search from './components/Search';
 
 class App extends Component {
 
@@ -22,9 +21,7 @@ class App extends Component {
             Learn React
           </a>
         </header> */}
-        <div className="tagBar">
-        <Search/>
-        </div>
+        {/* <Search/> */}
         <List/> 
       </div>
     );
