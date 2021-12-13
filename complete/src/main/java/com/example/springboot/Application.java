@@ -33,10 +33,12 @@ public class Application implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
       //  demo1();
-        System.out.println("----demo2 ");
-        demo2();
+      //  System.out.println("----demo2 ");
+      //  demo2();
         System.out.println("----demo3");
         demo3();
+     //   System.out.println("----demo1");
+    //    demo1();
         System.out.println("----finished demos");
     }
     /*@Bean
@@ -71,7 +73,7 @@ public class Application implements CommandLineRunner {
             System.out.println(mov.toString());
         }
           System.out.println("----searchByRating");
-        for (Movie mov:movieService.searchByRating(6.0, 7.0) ){
+        for (Movie mov:movieService.searchByRating(6.0, 7.5) ){
             System.out.println(mov.toString());
         }
       System.out.println("----findByName");
