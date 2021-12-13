@@ -16,6 +16,7 @@ public interface MovieService {
 
     public Movie save(Movie movie);
     public void delete(long id);
+    public boolean fetchIMDbMoviesAndSave();
 }
 
 
