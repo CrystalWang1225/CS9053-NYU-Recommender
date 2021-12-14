@@ -35,11 +35,11 @@ public class Application implements CommandLineRunner {
       //  demo1();
       //  System.out.println("----demo2 ");
       //  demo2();
-        System.out.println("----demo3");
-         demo3();
+        System.out.println("----Initializing database");
+        initializeDatabaseMovie();
      //   System.out.println("----demo1");
     //    demo1();
-        System.out.println("----finished demos");
+        System.out.println("----finished initializing");
     }
     /*@Bean
    public CommandLineRunner demo(MovieRepository repository) {
@@ -47,7 +47,7 @@ public class Application implements CommandLineRunner {
             demo1();
         };
     }*/
-    private void demo3(){
+    private void initializeDatabaseMovie(){
         movieService.fetchIMDbMoviesAndSave();
     }
     private void demo2(){

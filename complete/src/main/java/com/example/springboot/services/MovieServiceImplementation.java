@@ -115,7 +115,7 @@ public class MovieServiceImplementation implements MovieService{
                 genre= row.select(".genre").text();
                 //parse genres
                 genre_lst = genre.split(",");
-                System.out.println("genres:");
+
                 for (int i =0; i<=genre_lst.length-1; i++ ){
                   //  System.out.println(genre_lst[i].trim().toLowerCase() );
                     // add the genre to set
@@ -123,10 +123,7 @@ public class MovieServiceImplementation implements MovieService{
                 }
                 //generate genre array which will be used for new Movie initialization
                 genre_array = generate_genre_array(genre_set);
-                System.out.println("traversing set:");
-                for (String gnr:genre_set){
-                    System.out.println(gnr);
-                }
+
                 //initializing fields for movie object
                  is_comedy = genre_array[COMEDY_INDEX];
                  is_scifi = genre_array[SCIFI_INDEX];
@@ -144,12 +141,12 @@ public class MovieServiceImplementation implements MovieService{
                     rating_str = "5.0";
                 }
                 rating = Double.parseDouble(rating_str);
-                System.out.println(title + " genre: " + genre + " rating: " + rating  );
+            //    System.out.println(title + " genre: " + genre + " rating: " + rating  );
                 //save to database
                 save( new Movie(title, rating, is_comedy, is_scifi, is_horror, is_romance, is_action, is_thriller,
                         is_drama, is_mystery, is_crime));
 
-                System.out.println("Saved");
+                System.out.println("Movie Saved");
                 genre_set.clear();//clear the set for next movie
             }
         } catch (IOException e) {
