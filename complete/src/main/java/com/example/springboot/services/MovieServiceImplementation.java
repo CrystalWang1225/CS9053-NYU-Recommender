@@ -96,6 +96,10 @@ public class MovieServiceImplementation implements MovieService{
                 title= row.select(".lister-item-header").select("a[href]").text();
                 genre= row.select(".genre").text();
                 rating_str= row.select(".ratings-imdb-rating").attr("data-value");
+               //manually assigning a rating for the movies that dont have a rating for now
+                if (rating_str.length() == 0){
+                    rating_str = "5.0";
+                }
                 rating = Double.parseDouble(rating_str);
                 System.out.println(title + " genre: " + genre + " rating: " + rating  );
                 //save to database

@@ -36,7 +36,7 @@ public class Application implements CommandLineRunner {
       //  System.out.println("----demo2 ");
       //  demo2();
         System.out.println("----demo3");
-        demo3();
+         demo3();
      //   System.out.println("----demo1");
     //    demo1();
         System.out.println("----finished demos");

@@ -8,6 +8,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { ReactSearchAutocomplete } from 'react-search-autocomplete';
 import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
+import Slider from '@material-ui/core/Slider';
 
 class List extends Component{
     constructor(props){
@@ -28,10 +29,11 @@ class List extends Component{
           currMovieList:[]
         }
         this.displayLiked = this.displayLiked.bind(this);
+        this.getRange = this.getRange.bind(this);
     }
 
     componentDidMount(){
-        // this.getData();
+        //this.getData();
     }
 
     componentDidUpdate(prevProps, prevState){
@@ -53,15 +55,16 @@ class List extends Component{
     this.setState({currentGenre: current})
   }
 
-    async getData() {
+    async getDataRange() {
         await fetch(
-            `http://localhost:8080/scrape`,
+            `http://localhost:8080/search?min=` + this.state.range[0] + '&max=' + this.state.range[1] ,
             {
                 method:'GET',
                 mode:'cors'
             }).then(response => response.json()).then(json => {
 
                 console.log(json)
+                this.setState({movieList: json})
             }).catch(console.error);
             }
     
@@ -149,6 +152,11 @@ class List extends Component{
             this.setState({currMovieList: currentList});
           }
 
+          getRange = (event, value) => {
+            this.setState({range: value});
+            this.getDataRange();
+          }
+
     render() {
         let movie= []
         if (this.state.isLiked === false){
@@ -169,7 +177,7 @@ class List extends Component{
                             <div style={{ marginBottom: 10 }}>Search for a Movie here</div> 
                             <ReactSearchAutocomplete
                             className="search__input"
-                            items={movieNames}
+                            items={movie}
                             onSearch={this.handleOnSearch}
                             onHover={this.handleOnHover}
                             onSelect={this.handleOnSelect}
@@ -220,6 +228,19 @@ class List extends Component{
                         </div>
 
                         </div>
+                      <div style={{ marginTop: 10, marginBottom:10 }}>Search by rating:  </div>
+                                            <Slider
+                              getAriaLabel={() => "Test"}
+                              defaultValue={[6.4, 8.9]}
+                              // value={}
+                              // getAriaValueText={}
+                              onChangeCommitted={this.getRange}
+                              valueLabelDisplay="auto"
+                              step={0.1}
+                              marks
+                              min={2.0}
+                              max={9.7}
+                            />
                       </div>
               }
 
@@ -265,9 +286,6 @@ class List extends Component{
                                   <b>Rating:</b> {book.rating}
                                 </p>
                                 <p>
-                                  <b>Cast:</b> {book.cast}
-                                </p>
-                                <p>
                                 <FormControlLabel
                                 control={
                             <Checkbox icon={<FavoriteBorder />}
@@ -293,7 +311,7 @@ class List extends Component{
                               </div>
                             </div>
     
-                            <div className="description_book">
+                            {/* <div className="description_book">
                              
                               {book.genre.map((each,id) => { 
                               return (              
@@ -305,7 +323,7 @@ class List extends Component{
                                 style={{"marginRight" : "5px"}}/>
                               );}
                             )}
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </div>
