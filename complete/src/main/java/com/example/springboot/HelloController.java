@@ -37,4 +37,57 @@ public class HelloController {
 		return movieService.searchByRating(Double.parseDouble(min),Double.parseDouble(max));
 	}
 
+	@GetMapping("/search/comedy")
+	@CrossOrigin(origins = "http://localhost:3000")
+	List<Movie>  getComedy() {
+		return movieService.getComedy();
+	}
+
+	@GetMapping("/search/scifi")
+	@CrossOrigin(origins = "http://localhost:3000")
+	List<Movie>  getScifi() {
+		return movieService.getScifi();
+	}
+
+	@GetMapping("/search/horror")
+	@CrossOrigin(origins = "http://localhost:3000")
+	List<Movie>  getHorror() {
+		return movieService.getHorror();
+	}
+
+	@GetMapping("/search/romance")
+	@CrossOrigin(origins = "http://localhost:3000")
+	List<Movie>  getRomance() {
+		return movieService.getRomance();
+	}
+
+	@GetMapping("/search/action")
+	@CrossOrigin(origins = "http://localhost:3000")
+	List<Movie>  getAction() {
+		return movieService.getAction();
+	}
+
+	@GetMapping("/search/thriller")
+	@CrossOrigin(origins = "http://localhost:3000")
+	List<Movie>  getThriller() {
+		return movieService.getThriller();
+	}
+
+	@GetMapping("/search/drama")
+	@CrossOrigin(origins = "http://localhost:3000")
+	List<Movie>  getDrama() {
+		return movieService.getDrama();
+	}
+
+	@GetMapping("/search/mystery")
+	@CrossOrigin(origins = "http://localhost:3000")
+	List<Movie>  getMystery() {
+		return movieService.getMystery();
+	}
+	@GetMapping("/search/crime")
+	@CrossOrigin(origins = "http://localhost:3000")
+	List<Movie>  getCrime() {
+		return movieService.getCrime();
+	}
+
 }
