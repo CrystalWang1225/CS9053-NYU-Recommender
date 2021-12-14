@@ -35,6 +35,11 @@ public class Application implements CommandLineRunner {
         System.out.println("----Initializing database");
         initializeDatabaseMovie();
         System.out.println("----finished initializing");
+        System.out.println("You can start using the app now!");
+    }
+
+    private void initializeDatabaseMovie(){
+        movieService.fetchIMDbMoviesAndSave();
     }
     /*@Bean
    public CommandLineRunner demo(MovieRepository repository) {
@@ -85,9 +90,7 @@ public class Application implements CommandLineRunner {
         }
 
     }
-    private void initializeDatabaseMovie(){
-        movieService.fetchIMDbMoviesAndSave();
-    }
+
     private void demo2(){
      /*   movieService.save(new Movie("Taxi Driver", 9.0));
         movieService.save(new Movie("Batman", 2.5));*/

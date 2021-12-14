@@ -23,6 +23,12 @@ public class MovieServiceImplementation implements MovieService{
     final String imdb_scifi_link = "https://www.imdb.com/search/title/?genres=sci-fi&explore=title_type,genres&pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3396781f-d87f-4fac-8694-c56ce6f490fe&pf_rd_r=3SXPNY4EJJ8DB24QT8S3&pf_rd_s=center-1&pf_rd_t=15051&pf_rd_i=genre&ref_=ft_gnr_pr1_i_2";
     final String imdb_action_link = "https://www.imdb.com/search/title/?genres=action&explore=title_type,genres&pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=e0da8c98-35e8-4ebd-8e86-e7d39c92730c&pf_rd_r=3SXPNY4EJJ8DB24QT8S3&pf_rd_s=center-2&pf_rd_t=15051&pf_rd_i=genre&ref_=ft_gnr_pr2_i_2";
     final String imdb_drama_link = "https://www.imdb.com/search/title/?genres=drama&explore=title_type,genres&pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=f1cf7b98-03fb-4a83-95f3-d833fdba0471&pf_rd_r=3SXPNY4EJJ8DB24QT8S3&pf_rd_s=center-3&pf_rd_t=15051&pf_rd_i=genre&ref_=ft_gnr_pr3_i_1";
+    final String imdb_horror_link = "https://www.imdb.com/search/title/?genres=horror&explore=title_type,genres&pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3396781f-d87f-4fac-8694-c56ce6f490fe&pf_rd_r=EV1XC0VWRRKZ3WMQD8S9&pf_rd_s=center-1&pf_rd_t=15051&pf_rd_i=genre&ref_=ft_gnr_pr1_i_3";
+    final String imdb_thriller_link = "https://www.imdb.com/search/title/?genres=thriller&explore=title_type,genres&pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=e0da8c98-35e8-4ebd-8e86-e7d39c92730c&pf_rd_r=EV1XC0VWRRKZ3WMQD8S9&pf_rd_s=center-2&pf_rd_t=15051&pf_rd_i=genre&ref_=ft_gnr_pr2_i_3";
+    final String imdb_mystery_link = "https://www.imdb.com/search/title/?genres=mystery&explore=title_type,genres&pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=f1cf7b98-03fb-4a83-95f3-d833fdba0471&pf_rd_r=EV1XC0VWRRKZ3WMQD8S9&pf_rd_s=center-3&pf_rd_t=15051&pf_rd_i=genre&ref_=ft_gnr_pr3_i_2";
+    final String imdb_crime_link = "https://www.imdb.com/search/title/?genres=crime&explore=title_type,genres&pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=f1cf7b98-03fb-4a83-95f3-d833fdba0471&pf_rd_r=EV1XC0VWRRKZ3WMQD8S9&pf_rd_s=center-3&pf_rd_t=15051&pf_rd_i=genre&ref_=ft_gnr_pr3_i_3";
+
+
     //INDEX that maps genres to genre array which is used to initialize the
     final int COMEDY_INDEX = 0;
     final int SCIFI_INDEX = 1;
@@ -122,20 +128,27 @@ public class MovieServiceImplementation implements MovieService{
 
     public boolean fetchIMDbMoviesAndSave(){
         //scraping each genre seperately and printing the results  out
-        System.out.println("starting fetching movies");
+        System.out.println("started fetching movies from IMDb web pages");
+        System.out.println("------------------------comedy genre--------------------------------");
         scrape_url(imdb_comedy_link);
-        System.out.println("-----------------------------------------------------------------------");
-       /*scrape_url(imdb_romance_link);
-        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("------------------------romance genre--------------------------------");
+        scrape_url(imdb_romance_link);
+        System.out.println("------------------------scifi genre--------------------------------");
         scrape_url(imdb_scifi_link);
-        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("------------------------action genre--------------------------------");
         scrape_url(imdb_action_link);
-        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("------------------------drama genre--------------------------------");
         scrape_url(imdb_drama_link);
-        System.out.println("-----------------------------------------------------------------------");*/
-      //  System.out.println(allMovies_str==null);
-     //   System.out.println(allMovies_str.size());
-        //System.out.println(allMovies==null);
+        System.out.println("------------------------horror genre--------------------------------");
+        scrape_url(imdb_horror_link);
+        System.out.println("------------------------thriller genre--------------------------------");
+        scrape_url(imdb_thriller_link);
+        System.out.println("------------------------mystery genre--------------------------------");
+        scrape_url(imdb_mystery_link);
+        System.out.println("------------------------crime genre--------------------------------");
+        scrape_url(imdb_crime_link);
+        System.out.println("-----------------------------------------------------------------------");
+
         return true;
     }
 
