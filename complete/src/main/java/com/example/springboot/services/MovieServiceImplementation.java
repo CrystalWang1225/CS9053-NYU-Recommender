@@ -77,10 +77,10 @@ public class MovieServiceImplementation implements MovieService{
 
     public boolean fetchIMDbMoviesAndSave(){
         //scraping each genre seperately and printing the results  out
-        System.out.println("starting romance movies");
+        System.out.println("starting fetching movies");
         scrape_url(imdb_comedy_link);
         System.out.println("-----------------------------------------------------------------------");
-       /* scrape_url(imdb_romance_link);
+       /*scrape_url(imdb_romance_link);
         System.out.println("-----------------------------------------------------------------------");
         scrape_url(imdb_scifi_link);
         System.out.println("-----------------------------------------------------------------------");
