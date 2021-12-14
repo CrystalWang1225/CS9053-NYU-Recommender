@@ -142,7 +142,7 @@ public class MovieServiceImplementation implements MovieService{
     public void scrape_url(String url_link)  {
         // given a imdb URL address that contains movies for specific genre,
         // this method scrapes the movies and prints out the result for each movie
-        final Document document_romance;
+        final Document document_scraped;
         //global variables
         String title, genre, rating_str;
         double rating;
@@ -154,8 +154,8 @@ public class MovieServiceImplementation implements MovieService{
         Boolean is_drama; Boolean is_mystery;Boolean is_crime;
       //  Movie tmp;
         try {
-            document_romance = Jsoup.connect(url_link).get();
-            for (Element row:document_romance.getElementsByClass("lister-item-content")){
+            document_scraped = Jsoup.connect(url_link).get();
+            for (Element row:document_scraped.getElementsByClass("lister-item-content")){
                 title= row.select(".lister-item-header").select("a[href]").text();
                 genre= row.select(".genre").text();
                 //parse genres
@@ -191,9 +191,10 @@ public class MovieServiceImplementation implements MovieService{
                 save( new Movie(title, rating, is_comedy, is_scifi, is_horror, is_romance, is_action, is_thriller,
                         is_drama, is_mystery, is_crime));
 
-                System.out.println("Movie Saved");
+                System.out.print(".");
                 genre_set.clear();//clear the set for next movie
             }
+            System.out.println(".");
         } catch (IOException e) {
             e.printStackTrace();
         }

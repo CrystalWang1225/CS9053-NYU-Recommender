@@ -35,7 +35,6 @@ public class Application implements CommandLineRunner {
         System.out.println("----Initializing database");
         initializeDatabaseMovie();
         System.out.println("----finished initializing");
-        demo4();
     }
     /*@Bean
    public CommandLineRunner demo(MovieRepository repository) {
