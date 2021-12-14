@@ -49,6 +49,51 @@ public class MovieServiceImplementation implements MovieService{
     }
 
     @Override
+    public List<Movie> getComedy() {
+        return movieRepository.getComedy();
+    }
+
+    @Override
+    public List<Movie> getScifi() {
+        return movieRepository.getScifi();
+    }
+
+    @Override
+    public List<Movie> getRomance() {
+        return movieRepository.getRomance();
+    }
+
+    @Override
+    public List<Movie> getHorror() {
+        return movieRepository.getHorror();
+    }
+
+    @Override
+    public List<Movie> getAction() {
+        return movieRepository.getAction();
+    }
+
+    @Override
+    public List<Movie> getDrama() {
+        return movieRepository.getDrama();
+    }
+
+    @Override
+    public List<Movie> getMystery() {
+        return movieRepository.getMystery();
+    }
+
+    @Override
+    public List<Movie> getThriller() {
+        return movieRepository.getThriller();
+    }
+
+    @Override
+    public List<Movie> getCrime() {
+        return movieRepository.getCrime();
+    }
+
+    @Override
     public List<Movie> findByName(String name) {
         return  movieRepository.findByName(name);
     }

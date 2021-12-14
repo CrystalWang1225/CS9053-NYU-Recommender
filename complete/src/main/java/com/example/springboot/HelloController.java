@@ -37,4 +37,11 @@ public class HelloController {
 		return movieService.searchByRating(Double.parseDouble(min),Double.parseDouble(max));
 	}
 
+	/*@GetMapping("/search")
+	@CrossOrigin(origins = "http://localhost:3000")
+	List<Movie>  getByGenre(@RequestParam String comedy, @RequestParam String sci_fi) {
+		// example request : http://localhost:8080/search?min=7.0&max=9.0
+		return null;//movieService.searchByRating(Double.parseDouble(min),Double.parseDouble(max));
+	}*/
+
 }

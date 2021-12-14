@@ -9,6 +9,16 @@ public interface MovieService {
 
     public Iterable<Movie> findAll();
     public List<Movie> searchByRating( double min,  double max);
+    public List<Movie> getComedy();
+    public List<Movie> getScifi();
+    public List<Movie> getRomance();
+    public List<Movie> getHorror();
+    public List<Movie> getAction();
+    public List<Movie> getDrama();
+    public List<Movie> getMystery();
+    public List<Movie> getThriller();
+    public List<Movie> getCrime();
+
 
     public List<Movie> findByName(String name);
 

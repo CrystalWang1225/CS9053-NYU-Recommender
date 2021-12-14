@@ -32,14 +32,10 @@ public class Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-      //  demo1();
-      //  System.out.println("----demo2 ");
-      //  demo2();
         System.out.println("----Initializing database");
         initializeDatabaseMovie();
-     //   System.out.println("----demo1");
-    //    demo1();
         System.out.println("----finished initializing");
+        demo4();
     }
     /*@Bean
    public CommandLineRunner demo(MovieRepository repository) {
@@ -47,6 +43,49 @@ public class Application implements CommandLineRunner {
             demo1();
         };
     }*/
+    private void demo4(){
+      /*  System.out.println("----findAll");
+        for (Movie mov:movieService.findAll() ){
+            System.out.println(mov.toString());
+        }*/
+        System.out.println("--------------sci fi movies:");
+        for (Movie mov:movieService.getScifi( ) ){
+            System.out.println(mov.toString());
+        }
+        System.out.println("--------------comedy movies:");
+        for (Movie mov:movieService.getComedy( ) ){
+            System.out.println(mov.toString());
+        }
+        System.out.println("--------------horror movies:");
+        for (Movie mov:movieService.getHorror( ) ){
+            System.out.println(mov.toString());
+        }
+        System.out.println("--------------romance movies:");
+        for (Movie mov:movieService.getRomance( ) ){
+            System.out.println(mov.toString());
+        }
+        System.out.println("--------------action movies:");
+        for (Movie mov:movieService.getAction( ) ){
+            System.out.println(mov.toString());
+        }
+        System.out.println("--------------thriller movies:");
+        for (Movie mov:movieService.getThriller( ) ){
+            System.out.println(mov.toString());
+        }
+        System.out.println("--------------drama movies:");
+        for (Movie mov:movieService.getDrama( ) ){
+            System.out.println(mov.toString());
+        }
+        System.out.println("--------------mystery movies:");
+        for (Movie mov:movieService.getMystery( ) ){
+            System.out.println(mov.toString());
+        }
+        System.out.println("--------------crime movies:");
+        for (Movie mov:movieService.getCrime( ) ){
+            System.out.println(mov.toString());
+        }
+
+    }
     private void initializeDatabaseMovie(){
         movieService.fetchIMDbMoviesAndSave();
     }

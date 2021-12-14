@@ -12,6 +12,36 @@ public interface MovieRepository extends CrudRepository<Movie, Long> {
     @Query("from Movie where rating >= :min and rating <= :max")
     public List<Movie> searchByRating(@Param("min") double min, @Param("max") double max);
 
+    @Query("from Movie where is_comedy = true")
+    public List<Movie> getComedy();
+
+    @Query("from Movie where is_scifi = true ")
+    public List<Movie> getScifi();
+
+    @Query("from Movie where  is_horror = true" )
+    public List<Movie> getHorror();
+
+    @Query("from Movie where  is_romance = true" )
+    public List<Movie> getRomance();
+
+    @Query("from Movie where  is_action = true" )
+    public List<Movie> getAction();
+
+    @Query("from Movie where  is_thriller = true" )
+    public List<Movie> getThriller();
+
+    @Query("from Movie where  is_drama = true" )
+    public List<Movie> getDrama();
+
+    @Query("from Movie where  is_mystery = true" )
+    public List<Movie> getMystery();
+
+    @Query("from Movie where  is_crime = true" )
+    public List<Movie> getCrime();
+
+
+
+
     List<Movie> findByName(String name);
 
     Movie findById(long id);
