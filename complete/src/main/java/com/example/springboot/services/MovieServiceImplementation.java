@@ -13,6 +13,7 @@ import javax.sound.midi.SysexMessage;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 @Service("movieService")
@@ -40,6 +41,8 @@ public class MovieServiceImplementation implements MovieService{
     final int MYSTERY_INDEX = 7;
     final int CRIME_INDEX = 8;
 
+    //set to store all movies, to avoid duplicates
+    HashSet<String> movie_set = new HashSet<String>();
 
     @Autowired
     private MovieRepository movieRepository;
@@ -199,10 +202,16 @@ public class MovieServiceImplementation implements MovieService{
                     rating_str = "5.0";
                 }
                 rating = Double.parseDouble(rating_str);
-            //    System.out.println(title + " genre: " + genre + " rating: " + rating  );
                 //save to database
-                save( new Movie(title, rating, is_comedy, is_scifi, is_horror, is_romance, is_action, is_thriller,
-                        is_drama, is_mystery, is_crime));
+                //if already saved the movie with the same title, dont save it
+                if (! movie_set.contains(title.toLowerCase())){
+                    //save new movie title to set
+                    movie_set.add(title.toLowerCase());
+                    //save the Movie object to database
+                    save( new Movie(title, rating, is_comedy, is_scifi, is_horror, is_romance, is_action, is_thriller,
+                            is_drama, is_mystery, is_crime));
+                }
+
 
                 System.out.print(".");
                 genre_set.clear();//clear the set for next movie
