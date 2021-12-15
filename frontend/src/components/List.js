@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {movieNames} from '../assets/movieNames';
 import './List.css';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
@@ -16,35 +15,44 @@ class List extends Component{
         this.state = {
           genres:[
             { id: 1, name: "Comedy" },
-            { id: 2, name: "Romance" },
-            { id: 3, name: "Scifi" },
-            { id: 4, name: "Action" },
-            { id: 5, name: "Drama" }
+            { id: 2, name: "Scifi" },
+            { id: 3, name: "Horror" },
+            { id: 4, name: "Romance" },
+            { id: 5, name: "Action" },
+            { id: 6, name: "Thriller" },
+            { id: 7, name: "Drama" },
+            { id: 8, name: "Mystery" },
+            { id: 9, name: "Crime" },
           ],
           activeId: [],
-          movieList: movieNames,
+          movieList:[],
           currentGenre:[],
           likedList:[],
           isLiked: false,
-          currMovieList:[]
+          currMovieList:[],
+          isReset: false
         }
         this.displayLiked = this.displayLiked.bind(this);
+        this.resetFilter = this.resetFilter.bind(this);
         this.getRange = this.getRange.bind(this);
+        this.chipFilter = this.chipFilter.bind(this);
     }
 
     componentDidMount(){
-        //this.getData();
+        this.getAll();
     }
 
     componentDidUpdate(prevProps, prevState){
-      if (prevState.activeId !== this.state.activeId){
-        this.filterGenre();
+      if (prevState.activeId !== this.state.activeId && this.state.isReset !== true){
+        this.filterGenre("add");
         }
-
+      // if (prevState.currentGenre !== this.state.currentGenre){
+      //   console.log("Changed")
+      // }
       }
 
     
-    filterGenre() {
+    filterGenre(action) {
       let current = [];
       for (let i = 0; i < this.state.activeId.length; i++){
         let test = this.state.genres.find ((item) => {
@@ -53,7 +61,71 @@ class List extends Component{
         current=[...current, test];
     }
     this.setState({currentGenre: current})
+    this.getDataGenre(current, action);
   }
+  
+  filterMovie(id, type) {
+    let prevList = this.state.allList;
+    if (type === "genre"){
+      prevList = this.state.prevListGenre
+    }
+    if (type === "range"){
+      prevList = this.state.prevListRange
+    }
+
+    let current = [];
+    for (let i = 0; i < id.length; i++){
+      let test = prevList.find ((item) => {
+        return item.id === id[i]
+      })
+      if (test !== undefined){
+        current=[...current, test];
+      }
+  }
+    this.setState({movieList: current})
+    if (type === "genre"){
+      this.setState({prevListRange: current})
+    }
+    if (type === "range"){
+      this.setState({prevListGenre: current})
+    }
+
+  }
+
+  async getAll() {
+    await fetch(
+        `http://localhost:8080/getAll` ,
+        {
+            method:'GET',
+            mode:'cors'
+        }).then(response => response.json()).then(json => {
+            let movies = this.getGenreMapping(json);
+            this.setState({movieList: movies})
+            this.setState({allList: movies})
+            this.setState({prevListGenre: movies})
+            this.setState({prevListRange: movies})
+        }).catch(console.error);
+        }
+    
+        getDataName = (item) => {
+          let cur = this.state.movieList
+          let index = -1
+          for (let i = 0; i < cur.length; i++){
+            if (cur[i].id === item.id){
+              index = i;
+            }
+          } 
+          if (index !== -1){
+            let temp = cur[0]
+            cur[0] = item
+            cur[index] = temp
+          } else {
+            let temp = cur[0]
+            cur[0] = item
+            cur[cur.length] = temp
+          }
+          this.setState({movieList: cur})
+          }
 
     async getDataRange() {
         await fetch(
@@ -62,19 +134,88 @@ class List extends Component{
                 method:'GET',
                 mode:'cors'
             }).then(response => response.json()).then(json => {
-
-                console.log(json)
-                this.setState({movieList: json})
+              // let movies = this.getGenreMapping(json);
+              // console.log(movies)
+              // console.log(this.state.prevList)
+              // let filtered = this.state.prevList.filter(value => movies.indexOf(value) !== -1)
+              let filteredID = [];
+              for (let i = 0; i< json.length; i++){
+                filteredID = [...filteredID,json[i].id]
+              }
+              this.filterMovie(filteredID,"range");
+              // this.setState({movieList: filtered})
             }).catch(console.error);
             }
-    
+            
+            getGenreMapping (json){
+              for (let i = 0; i < json.length; i++){
+                let current = json[i];
+                let currGenre = [];
+                if (current.is_action){
+                  currGenre = [...currGenre, "Action"]
+                }
+                if (current.is_comedy){
+                  currGenre = [...currGenre, "Comedy"]
+                }
+                if (current.is_horror){
+                  currGenre = [...currGenre, "Horror"]
+                }
+                if (current.is_scifi){
+                  currGenre = [...currGenre, "Scifi"]
+                }
+                if (current.is_romance){
+                  currGenre = [...currGenre, "Romance"]
+                }
+                if (current.is_thriller){
+                  currGenre = [...currGenre, "Thriller"]
+                }
+                if (current.is_drama){
+                  currGenre = [...currGenre, "Drama"]
+                }
+                if (current.is_mystery){
+                  currGenre = [...currGenre, "Mystery"]
+                }
+                if (current.is_crime){
+                  currGenre = [...currGenre, "Crime"]
+                }
+                json[i].genre = currGenre;
+              }
+
+              return json
+            }
+
+            async getDataGenre(data,action) {
+              if (action === "delete" && data.length === 0){
+                // this.resetFilter();
+                this.setState({movieList: this.state.prevListRange})
+                return;
+              }
+
+                let filteredID = [];
+                for (let i = 0; i < data.length; i++){
+                  let current = data[i];
+                  await fetch(
+                    `http://localhost:8080/search/`+ current.name.toLowerCase(),
+                    {
+                        method:'GET',
+                        mode:'cors'
+                    }).then(response => response.json()).then(json => {
+                        for (let i = 0; i < json.length; i++){
+                          filteredID.push(json[i].id)
+                        }
+                    }).catch(console.error);
+                    }
+                    
+                    this.filterMovie(filteredID,"genre");
+              }
+
             onDelete (item) {
               let arr = this.state.activeId
               for (let i = 0; i < this.state.activeId.length; i++) {
                 if (this.state.activeId[i] === item.id) arr.splice(i, 1);
               }
               this.setState({activeId: arr});
-              this.filterGenre();
+              this.filterGenre("delete");
             }
             
             onAddition (tag) {
@@ -99,7 +240,10 @@ class List extends Component{
               }
               if (!existed){
                 this.setState({currMovieList: [...this.state.currMovieList, item]});
+                this.getDataName(item);
               }
+
+              
             };
             
             handleOnFocus = () => {
@@ -110,12 +254,12 @@ class List extends Component{
               //console.log("Cleared");
             };
             
-            chipFilter = (item) => {
-              console.log(this.state.activeId)
+            chipFilter(item) {
+              this.setState({isReset: false})
               if (!this.state.activeId.includes(item.id)){
                 this.setState({activeId: [...this.state.activeId,item.id]});
               }
-             
+              // this.filterGenre("add");
               // this.setState({isSelected: true});
             }
 
@@ -140,6 +284,20 @@ class List extends Component{
 
             displayLiked() {
               this.setState({isLiked: !this.state.isLiked})
+            }
+
+            resetFilter() {
+              this.setState({isReset: true})
+              this.setState({activeId: []})
+              let current = this.state.allList
+              this.setState({activeId: []})
+              this.setState({currMovieList:[]})
+              this.setState({currentGenre:[]})
+              this.setState({movieList: current})
+              this.setState({prevListRange: this.state.allList})
+              this.setState({prevListGenre: this.state.allList})
+
+              // this.setState({range:[6.4, 8.9]})
             }
 
             titleDelete = (each) => {
@@ -177,7 +335,7 @@ class List extends Component{
                             <div style={{ marginBottom: 10 }}>Search for a Movie here</div> 
                             <ReactSearchAutocomplete
                             className="search__input"
-                            items={movie}
+                            items={this.state.allList}
                             onSearch={this.handleOnSearch}
                             onHover={this.handleOnHover}
                             onSelect={this.handleOnSelect}
@@ -232,15 +390,18 @@ class List extends Component{
                                             <Slider
                               getAriaLabel={() => "Test"}
                               defaultValue={[6.4, 8.9]}
-                              // value={}
+                              //value={this.state.range}
                               // getAriaValueText={}
                               onChangeCommitted={this.getRange}
                               valueLabelDisplay="auto"
                               step={0.1}
                               marks
                               min={2.0}
-                              max={9.7}
+                              max={9.5}
                             />
+                      <Button color="primary" 
+                    variant="outlined" 
+                     onClick={this.resetFilter}>Reset Filters</Button>
                       </div>
               }
 
@@ -310,9 +471,8 @@ class List extends Component{
                                 />
                               </div>
                             </div>
-    
-                            {/* <div className="description_book">
-                             
+                          
+                            <div className="description_book">
                               {book.genre.map((each,id) => { 
                               return (              
                                 <Chip
@@ -323,7 +483,7 @@ class List extends Component{
                                 style={{"marginRight" : "5px"}}/>
                               );}
                             )}
-                            </div> */}
+                            </div>
                           </div>
                         </div>
                       </div>

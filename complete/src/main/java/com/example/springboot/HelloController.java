@@ -15,7 +15,8 @@ public class HelloController {
 	@Autowired
 	private MovieServiceImplementation movieService;
 
-	@GetMapping("/")
+	@GetMapping("/getAll")
+	@CrossOrigin(origins = "http://localhost:3000")
 	public List<Movie> index() {
 		System.out.println("Greetings from Spring Boot!");
 		return (List<Movie>) movieService.findAll();
