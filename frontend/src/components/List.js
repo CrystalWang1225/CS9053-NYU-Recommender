@@ -13,6 +13,7 @@ class List extends Component{
     constructor(props){
         super(props);
         this.state = {
+          // Genres this project has been worked for so far. Can extend this to more genres
           genres:[
             { id: 1, name: "Comedy" },
             { id: 2, name: "Scifi" },
@@ -30,7 +31,8 @@ class List extends Component{
           likedList:[],
           isLiked: false,
           currMovieList:[],
-          isReset: false
+          isReset: false,
+          range:[6.4, 8.9]
         }
         this.displayLiked = this.displayLiked.bind(this);
         this.resetFilter = this.resetFilter.bind(this);
@@ -46,13 +48,15 @@ class List extends Component{
       if (prevState.activeId !== this.state.activeId && this.state.isReset !== true){
         this.filterGenre("add");
         }
-      // if (prevState.currentGenre !== this.state.currentGenre){
-      //   console.log("Changed")
-      // }
       }
 
     
     filterGenre(action) {
+      //If all the genre tags are deleted, reset the filtering list
+      if (action === "delete" && this.state.activeId.length === 0){
+        this.resetFilter()
+        return;
+      }
       let current = [];
       for (let i = 0; i < this.state.activeId.length; i++){
         let test = this.state.genres.find ((item) => {
@@ -64,6 +68,9 @@ class List extends Component{
     this.getDataGenre(current, action);
   }
   
+  /* This function filters movie based on the selected gneres or rating. The displayed result will only display the intersection of
+  both functions result.
+  */
   filterMovie(id, type) {
     let prevList = this.state.allList;
     if (type === "genre"){
@@ -92,6 +99,7 @@ class List extends Component{
 
   }
 
+  //this function retrives all the movies from the database as display as the default option
   async getAll() {
     await fetch(
         `http://localhost:8080/getAll` ,
@@ -126,7 +134,8 @@ class List extends Component{
           }
           this.setState({movieList: cur})
           }
-
+    
+    //The async function uses the API to find the list of movies within the range of the ratings from the slider
     async getDataRange() {
         await fetch(
             `http://localhost:8080/search?min=` + this.state.range[0] + '&max=' + this.state.range[1] ,
@@ -134,16 +143,12 @@ class List extends Component{
                 method:'GET',
                 mode:'cors'
             }).then(response => response.json()).then(json => {
-              // let movies = this.getGenreMapping(json);
-              // console.log(movies)
-              // console.log(this.state.prevList)
-              // let filtered = this.state.prevList.filter(value => movies.indexOf(value) !== -1)
+
               let filteredID = [];
               for (let i = 0; i< json.length; i++){
                 filteredID = [...filteredID,json[i].id]
               }
               this.filterMovie(filteredID,"range");
-              // this.setState({movieList: filtered})
             }).catch(console.error);
             }
             
@@ -183,7 +188,9 @@ class List extends Component{
 
               return json
             }
-
+            
+            //The async function uses the API to find the list of movies based on the genres
+            //Note that one movie might belong to different genres, the function also makes sure that there won't be more duplciates in the web page
             async getDataGenre(data,action) {
               if (action === "delete" && data.length === 0){
                 // this.resetFilter();
@@ -208,7 +215,8 @@ class List extends Component{
                     
                     this.filterMovie(filteredID,"genre");
               }
-
+            
+            //this function deals with the deletion of selected genre 
             onDelete (item) {
               let arr = this.state.activeId
               for (let i = 0; i < this.state.activeId.length; i++) {
@@ -217,35 +225,14 @@ class List extends Component{
               this.setState({activeId: arr});
               this.filterGenre("delete");
             }
-            
-            onAddition (tag) {
-              const tags = [].concat(this.state.tags, tag)
-              this.setState({ tags })
-            }
-            
+            // The empty functions are placeholder for autocomplete search component to give the autocomplete bar
+            //more power to interact with the searched/unsearched results
             handleOnSearch = (string, results) => {
-              //console.log(string, results);
             };
             
             handleOnHover = (result) => {
-              //console.log(result);
             };
-            
-            handleOnSelect = (item) => {
-              let existed = false;
-              for (let movie of this.state.currMovieList){
-                if (movie.name === item.name){
-                  existed = true;
-                }
-              }
-              if (!existed){
-                this.setState({currMovieList: [...this.state.currMovieList, item]});
-                this.getDataName(item);
-              }
 
-              
-            };
-            
             handleOnFocus = () => {
               //console.log("Focused");
             };
@@ -254,15 +241,33 @@ class List extends Component{
               //console.log("Cleared");
             };
             
+            
+            // This function handles the autocomplete result from the search bar, it also takes care of the duplictes
+            handleOnSelect = (item) => {
+              let existed = false;
+              for (let movie of this.state.currMovieList){
+                if (movie.name === item.name){
+                  existed = true;
+                }
+              }
+              //if not existed, using the searchByName API to return the movie of selected to the front
+              if (!existed){
+                this.setState({currMovieList: [...this.state.currMovieList, item]});
+                this.getDataName(item);
+              }
+
+              
+            };
+            
+            //this function will be fired to add selected Genres
             chipFilter(item) {
               this.setState({isReset: false})
               if (!this.state.activeId.includes(item.id)){
                 this.setState({activeId: [...this.state.activeId,item.id]});
               }
-              // this.filterGenre("add");
-              // this.setState({isSelected: true});
             }
 
+            //this function creates and updates the liked watchlist for each session
             handleLiked = (movie) => (event) => {
 
               if (event.target.checked === true){
@@ -282,10 +287,12 @@ class List extends Component{
               }
             }
 
+            // to display the wathlist or the overall list
             displayLiked() {
               this.setState({isLiked: !this.state.isLiked})
             }
 
+            //this function will fire to reset all the filtering options
             resetFilter() {
               this.setState({isReset: true})
               this.setState({activeId: []})
@@ -294,12 +301,14 @@ class List extends Component{
               this.setState({currMovieList:[]})
               this.setState({currentGenre:[]})
               this.setState({movieList: current})
+              this.setState({range:[6.4, 8.9]})             
               this.setState({prevListRange: this.state.allList})
               this.setState({prevListGenre: this.state.allList})
 
-              // this.setState({range:[6.4, 8.9]})
+
             }
 
+            //this title helps delete the selected titles
             titleDelete = (each) => {
               let currentList = this.state.currMovieList;
               for (let i = 0; i < this.state.currMovieList.length; i++){
@@ -310,6 +319,7 @@ class List extends Component{
             this.setState({currMovieList: currentList});
           }
 
+          //this function updates the range of the range and based on the range to retrive data from the backend API
           getRange = (event, value) => {
             this.setState({range: value});
             this.getDataRange();
@@ -389,9 +399,8 @@ class List extends Component{
                       <div style={{ marginTop: 10, marginBottom:10 }}>Search by rating:  </div>
                                             <Slider
                               getAriaLabel={() => "Test"}
-                              defaultValue={[6.4, 8.9]}
-                              //value={this.state.range}
-                              // getAriaValueText={}
+                              value={this.state.range}
+                              // getAriaValueText={}s
                               onChangeCommitted={this.getRange}
                               valueLabelDisplay="auto"
                               step={0.1}
@@ -459,7 +468,8 @@ class List extends Component{
                             />
                                 </p>
                               </div>
-                              <div className="col-sm-4">
+                              {/* <-----  Uncomment this if there is image information in the database to diplay*/}
+                              {/* <div className="col-sm-4">
                                 <img className="images"
                                   // onError={this.addDefaultSrc}
                                   src={
@@ -469,7 +479,7 @@ class List extends Component{
                                   }
                                   alt=""
                                 />
-                              </div>
+                              </div> */}
                             </div>
                           
                             <div className="description_book">
