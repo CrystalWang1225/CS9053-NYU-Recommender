@@ -15,6 +15,13 @@ public class HelloController {
 	@Autowired
 	private MovieServiceImplementation movieService;
 
+	@GetMapping("/")
+	@CrossOrigin(origins = "http://localhost:3000")
+	public String index2() {
+		String result = "Greetings from Spring Boot!";
+		return result;
+	}
+
 	@GetMapping("/getAll")
 	@CrossOrigin(origins = "http://localhost:3000")
 	public List<Movie> index() {
