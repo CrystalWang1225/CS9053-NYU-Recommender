@@ -18,6 +18,9 @@ import java.util.Set;
 
 @Service("movieService")
 public class MovieServiceImplementation implements MovieService{
+    //implements Movie Service functionalities
+    //most backend functionalities reside in this class
+
     // imdb URL links for each genre
     final String imdb_comedy_link = "https://www.imdb.com/search/title/?genres=comedy&explore=title_type,genres&pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3396781f-d87f-4fac-8694-c56ce6f490fe&pf_rd_r=3SXPNY4EJJ8DB24QT8S3&pf_rd_s=center-1&pf_rd_t=15051&pf_rd_i=genre&ref_=ft_gnr_pr1_i_1";
     final String imdb_romance_link = "https://www.imdb.com/search/title/?genres=romance&explore=title_type,genres&pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=e0da8c98-35e8-4ebd-8e86-e7d39c92730c&pf_rd_r=3SXPNY4EJJ8DB24QT8S3&pf_rd_s=center-2&pf_rd_t=15051&pf_rd_i=genre&ref_=ft_gnr_pr2_i_1";
@@ -45,7 +48,7 @@ public class MovieServiceImplementation implements MovieService{
     HashSet<String> movie_set = new HashSet<String>();
 
     @Autowired
-    private MovieRepository movieRepository;
+    private MovieRepository movieRepository; //interface to interact with database
 
     @Override
     public Iterable<Movie> findAll(){
@@ -130,7 +133,7 @@ public class MovieServiceImplementation implements MovieService{
     private List<String>  allMovies_str;
 
     public boolean fetchIMDbMoviesAndSave(){
-        //scraping each genre seperately and printing the results  out
+        //calls the scraper for each genre seperately, which scrapes imdb web pages
         System.out.println("started fetching movies from IMDb web pages");
         System.out.println("------------------------comedy genre--------------------------------");
         scrape_url(imdb_comedy_link);
@@ -155,30 +158,30 @@ public class MovieServiceImplementation implements MovieService{
         return true;
     }
 
-    public void scrape_url(String url_link)  {
+    public void scrape_url(String url_link)  {//the Scraper
         // given a imdb URL address that contains movies for specific genre,
-        // this method scrapes the movies and prints out the result for each movie
+        // this method scrapes the movies , proceses their information and saves the Movie objects to database
         final Document document_scraped;
-        //global variables
+        //Movie variables
         String title, genre, rating_str;
         double rating;
         String[] genre_lst;
-        HashSet<String> genre_set = new HashSet<String>();
+        HashSet<String> genre_set = new HashSet<String>();// temporary set that stores genre of each Movie
         Boolean[] genre_array;
         Boolean is_comedy;Boolean is_scifi;Boolean is_horror;
         Boolean is_romance;Boolean is_action;Boolean is_thriller;
         Boolean is_drama; Boolean is_mystery;Boolean is_crime;
-      //  Movie tmp;
+
         try {
             document_scraped = Jsoup.connect(url_link).get();
             for (Element row:document_scraped.getElementsByClass("lister-item-content")){
+                //scrape title and genre
                 title= row.select(".lister-item-header").select("a[href]").text();
                 genre= row.select(".genre").text();
                 //parse genres
                 genre_lst = genre.split(",");
 
                 for (int i =0; i<=genre_lst.length-1; i++ ){
-                  //  System.out.println(genre_lst[i].trim().toLowerCase() );
                     // add the genre to set
                     genre_set.add(genre_lst[i].trim().toLowerCase() );
                 }
@@ -195,14 +198,14 @@ public class MovieServiceImplementation implements MovieService{
                  is_drama = genre_array[DRAMA_INDEX];
                  is_mystery = genre_array[MYSTERY_INDEX];
                  is_crime = genre_array[CRIME_INDEX];
-                //
+                //scraping rating
                 rating_str= row.select(".ratings-imdb-rating").attr("data-value");
                //manually assigning a rating for the movies that dont have a rating for now
                 if (rating_str.length() == 0){
                     rating_str = "5.0";
                 }
                 rating = Double.parseDouble(rating_str);
-                //save to database
+                //save Movie to database
                 //if already saved the movie with the same title, dont save it
                 if (! movie_set.contains(title.toLowerCase())){
                     //save new movie title to set
@@ -225,6 +228,8 @@ public class MovieServiceImplementation implements MovieService{
     }
 
     private Boolean[] generate_genre_array(HashSet<String> genre_set){
+        //given a set of genres, this function makes and array that will be used in Movie initialization
+        //converting from set to array helps organizing data
         Boolean[] genre_array = new Boolean[9];
         for(int  i=0; i<genre_array.length; i++){
             genre_array[i] = false;

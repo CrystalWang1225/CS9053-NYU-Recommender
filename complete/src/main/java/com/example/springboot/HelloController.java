@@ -11,9 +11,11 @@ import java.util.List;
 
 @RestController
 public class HelloController {
+	//controller to connect backend with frontend. this controller implements APIs to bring functionality to frontend
+
 
 	@Autowired
-	private MovieServiceImplementation movieService;
+	private MovieServiceImplementation movieService; //interface to interact with backend
 
 	@GetMapping("/")
 	@CrossOrigin(origins = "http://localhost:3000")
@@ -30,21 +32,22 @@ public class HelloController {
 
 	}
 
-	@GetMapping("/search/{name}")
+	@GetMapping("/search/{name}") //API to find movies by title
 	@CrossOrigin(origins = "http://localhost:3000")
 	List<Movie>  getByName(@PathVariable String name) {
 		//example request: http://localhost:8080/search/Encanto
 		return movieService.findByName(name);
-			//	.orElseThrow(() -> new EmployeeNotFoundException(id));
+
 	}
 
-	@GetMapping("/search")
+	@GetMapping("/search") //API to find movies by rating range
 	@CrossOrigin(origins = "http://localhost:3000")
 	List<Movie>  getByRating(@RequestParam String min, @RequestParam String max) {
 		// example request : http://localhost:8080/search?min=7.0&max=9.0
 		return movieService.searchByRating(Double.parseDouble(min),Double.parseDouble(max));
 	}
 
+	// below APIs are for get all movies that belong to a specific genre
 	@GetMapping("/search/comedy")
 	@CrossOrigin(origins = "http://localhost:3000")
 	List<Movie>  getComedy() {
@@ -92,6 +95,7 @@ public class HelloController {
 	List<Movie>  getMystery() {
 		return movieService.getMystery();
 	}
+
 	@GetMapping("/search/crime")
 	@CrossOrigin(origins = "http://localhost:3000")
 	List<Movie>  getCrime() {

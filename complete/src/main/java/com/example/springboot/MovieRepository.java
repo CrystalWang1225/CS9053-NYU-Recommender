@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository("movieRepository")
 public interface MovieRepository extends CrudRepository<Movie, Long> {
+    ///Interface for generic CRUD operations on a repository for Movie type.
+    // implements interactions with database
+
     @Query("from Movie where rating >= :min and rating <= :max")
     public List<Movie> searchByRating(@Param("min") double min, @Param("max") double max);
 
