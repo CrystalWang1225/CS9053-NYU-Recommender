@@ -6,14 +6,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Movie {
+public class Movie { // Movie Entity. This is represented as Movie table in database
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    //title and rating information
     private String name;
-  //  private String genre;
     private Double rating;
+    // booleans to indicate which genre Movie object belongs to
     private Boolean is_comedy;
     private Boolean is_scifi;
     private Boolean is_romance;
